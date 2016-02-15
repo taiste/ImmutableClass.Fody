@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>ImmutableClass.Fody</id>
+    <version>1.0.0</version>
+    <title>ImmutableClass.Fody</title>
+    <authors>Tom Ekstrom</authors>
+    <owners>Taiste Oy</owners>
+    <licenseUrl></licenseUrl>
+    <projectUrl></projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A Fody add-in that generates a fully usable immutable class from a stub.</description>
+    <summary />
+    <language>en-US</language>
+    <copyright>Copyright 2016 Taiste Oy</copyright>
+    <tags>immutable Fody Cecil ILWeaving</tags>
+    <dependencies>
+      <dependency id="Fody" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\AssemblyToReference\bin\Release\ImmutableClass.dll" target="lib\net40\ImmutableClass.dll" />
+    <file src="..\ImmutableClass.Fody\bin\Release\ImmutableClass.Fody.dll" target="ImmutableClass.Fody.dll" />
+    <file src="tools\net40\install.ps1" target="tools\net40\install.ps1" />
+    <file src="tools\net40\uninstall.ps1" target="tools\net40\uninstall.ps1" />
+  </files>
+</package>
