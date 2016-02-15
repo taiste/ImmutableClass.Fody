@@ -1,11 +1,10 @@
-# ImmutableClass.Fody#
+# ImmutableClass.Fody
 
-A Fody add-in that generates a fully usable immutable class from a stub.
+##A Fody add-in that generates a fully usable immutable class from a stub.
 
-Example:
+###Turns this:
 
-Turns this:
-
+```
 using System;
 using Newtonsoft.Json;
 
@@ -20,10 +19,11 @@ namespace TimeSloth.Core
         public bool BoolField { get; set; }
     }
 }
+```
 
+###Into this:
 
-Into this:
-
+```
 using Newtonsoft.Json;
 using System;
 
@@ -82,3 +82,4 @@ namespace TimeSloth.Core
 		}
 	}
 }
+```
