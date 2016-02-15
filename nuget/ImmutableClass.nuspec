@@ -6,8 +6,8 @@
     <title>ImmutableClass.Fody</title>
     <authors>Tom Ekstrom</authors>
     <owners>Taiste Oy</owners>
-    <licenseUrl></licenseUrl>
-    <projectUrl></projectUrl>
+    <licenseUrl>https://github.com/taiste/ImmutableClass.Fody/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/taiste/ImmutableClass.Fody</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A Fody add-in that generates a fully usable immutable class from a stub.</description>
     <summary />
