@@ -8,7 +8,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace TimeSloth.Core
+namespace Example
 {
     [ImmutableClass]
     public class ImmutableClassTest
@@ -27,7 +27,7 @@ namespace TimeSloth.Core
 using Newtonsoft.Json;
 using System;
 
-namespace TimeSloth.Core
+namespace Example
 {
 	public class ImmutableClassTest
 	{
