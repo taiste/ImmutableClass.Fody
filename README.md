@@ -44,6 +44,7 @@ Given the stub above, the generated class will then become as follows:
 
 ```c#
 using System;
+using ImmutableClass;
 
 namespace Example
 {
@@ -101,4 +102,4 @@ namespace Example
 }
 ```
 
-You can have extra attributes on the properties (such as `[JsonProperty("int")]`), they will be passed on to the generated class as they are. Likewise you can have fields in your class, they are also retained on without modification.
+You can have extra attributes on the properties (such as `[JsonProperty("int")] if you need to use the class in JSON serialization`), they will be passed on to the generated class as they are. Likewise you can have fields in your class, they are also retained on without modification.
