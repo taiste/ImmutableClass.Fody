@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>ImmutableClass.Fody</id>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <title>ImmutableClass.Fody</title>
     <authors>Tom Ekstrom</authors>
     <owners>Taiste Oy</owners>
@@ -15,13 +15,13 @@
     <copyright>Copyright 2016 Taiste Oy</copyright>
     <tags>immutable Fody Cecil ILWeaving</tags>
     <dependencies>
-      <dependency id="Fody" />
+      <dependency id="Fody" version="1.0"/>
     </dependencies>
   </metadata>
   <files>
-    <file src="..\AssemblyToReference\bin\Release\ImmutableClass.dll" target="lib\net40\ImmutableClass.dll" />
+    <file src="..\AssemblyToReference\bin\Release\ImmutableClass.dll" target="lib\ImmutableClass.dll" />
     <file src="..\ImmutableClass.Fody\bin\Release\ImmutableClass.Fody.dll" target="ImmutableClass.Fody.dll" />
-    <file src="tools\net40\install.ps1" target="tools\net40\install.ps1" />
-    <file src="tools\net40\uninstall.ps1" target="tools\net40\uninstall.ps1" />
+    <file src="tools\net40\install.ps1" target="tools\install.ps1" />
+    <file src="tools\net40\uninstall.ps1" target="tools\uninstall.ps1" />
   </files>
 </package>
