@@ -38,9 +38,10 @@ namespace Example
 There's two things here to note: (1) mark all classes that you want to generate the boilerplate for with the `[ImmutableClass]` attribute; and (2) add the `using ImmutableClass;` line at the top of the file whenever you use this attribute. The class itself is very simple, with just the name and a list of properties.
 
 When you build your project, ImmutableClass Fody weaver will generate boilerplate code for the class in the following ways:
-    * All properties will have their Setter method made as `private`. This is done in order to prevent the properties from being set from outside the class.
-    * A constructor having all its properties as parameters is added. This kind of constructor is typically used to create a new instance of an immutable class: since the class can't be changed anymore after it is created, all class properties need to be given in the constructor.
-    * 'With' instance methods related with each property will be added. If we used mutable classes, we could just give a new value to a property -- but for immutable classes we need to create a copy of the class, with everything the same except replace the property with something else. These methods are created exactly for this purpose. The method has the name of the property to change, and one single argument to be used as the value of that property. Values for all other properties will be copied over from the instance where this method is called.
+
+* All properties will have their Setter method made as `private`. This is done in order to prevent the properties from being set from outside the class.
+* A constructor having all its properties as parameters is added. This kind of constructor is typically used to create a new instance of an immutable class: since the class can't be changed anymore after it is created, all class properties need to be given in the constructor.
+* 'With' instance methods related with each property will be added. If we used mutable classes, we could just give a new value to a property -- but for immutable classes we need to create a copy of the class, with everything the same except replace the property with something else. These methods are created exactly for this purpose. The method has the name of the property to change, and one single argument to be used as the value of that property. Values for all other properties will be copied over from the instance where this method is called.
 
 Given the stub above, the generated class will then become as follows:
 
