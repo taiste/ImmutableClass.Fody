@@ -6,6 +6,7 @@
 Use NuGet to add ImmutableClass.Fody in each project where you want to use it:
 * If you're using Visual Studio, right click on the project name in the Solution Explorer and select "Manage NuGet packages..." from the pop-up menu. Or use the NuGet Package Manager Console if you prefer.
 * If you're using Xamarin Studio, right click on the Packages folder under the project. In the pop-up menu, select "Add packages...".
+
 ImmutableClass depends on Fody, so it should be added automatically too, if you don't have it already.
 
 There will be a FodyWeavers.XML file in the root folder of each project. Add an`<ImmutableClass />` tag to the file, so that it looks something like the snippet below. If you have several weavers added, they will appear here too:
