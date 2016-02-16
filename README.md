@@ -35,7 +35,9 @@ When you build your project, ImmutableClass Fody weaver will then generate boile
     * All properties will have their Setter method made as `private`. This is done in order to prevent the properties from being set from outside the class.
     * A constructor having all properties as parameters is added. This is the normal way to create a new instance of this class.
     * 'With' instance methods related with each property will be added. This method will create a copy of the current instance, except that the given parameter will replace the value of the property in question.
-5. Given the stub above, the generated class will then become as follows:
+
+Given the stub above, the generated class will then become as follows:
+
 ```c#
 using System;
 
