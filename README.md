@@ -1,6 +1,6 @@
 #ImmutableClass.Fody
 
-##A Fody add-in that generates boilerplate code for a usable immutable class from a stub class.
+##A Fody add-in that generates boilerplate code for an immutable class from a stub class.
 
 ####How to use it:
 Use NuGet to add package ImmutableClass.Fody in each project where you want to use it. ImmutableClass depends on Fody, so it should be added too.
