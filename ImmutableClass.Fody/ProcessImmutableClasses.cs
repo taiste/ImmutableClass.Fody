@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Mono.Cecil;
@@ -33,14 +33,15 @@ public class ProcessImmutableClasses
             {
                 continue;
             }
-            ProcessClass (type);
+            ProcessClass(type);
         }
     }
 
     private void ProcessClass(TypeDefinition type)
     {
-        // Remove [ImmutableClass] attribute from the class
         _logInfo("\tProcess immutable class:" + type.FullName);
+
+        // Remove [ImmutableClass] attribute from the class
         var customAttribute = type.CustomAttributes.First(x => x.AttributeType.Name == "ImmutableClassAttribute");
         type.CustomAttributes.Remove(customAttribute);
 
@@ -51,17 +52,37 @@ public class ProcessImmutableClasses
         // For each property:
         // 1. If the property has a set method, set it as private
         // 2. Create a 'with' method, so that a copy of the class can be created with only the value of that single property changed
+        // Properties marked with the [ImmutableClassIgnore] attribute are ignored
         foreach (var prop in type.Properties)
         {
-            if (prop.SetMethod != null) {
+            if (prop.CustomAttributes.ContainsAttribute("ImmutableClassIgnoreAttribute"))
+            {
+                _logInfo("Ignoring property " + prop.Name);
+                continue;
+            }
+            if (prop.SetMethod != null)
+            {
                 prop.SetMethod.IsPrivate = true;
                 prop.SetMethod.IsPublic = false;
             }
-            type.Methods.Add(mc.CreateWithMethodForProperty( type, prop));
+            type.Methods.Add(mc.CreateWithMethodForProperty(type, prop));
         }
 
         // Destroy the empty constructor if it exists
-        mc.DestroyEmptyConstructor (type);
+        mc.DestroyEmptyConstructor(type);
+
+        // Remove [ImmutableClassIgnore] attribute from the properties
+        foreach (var prop in type.Properties)
+        {
+            var ignoreProp = prop.CustomAttributes.FirstOrDefault(x => x.AttributeType.Name == "ImmutableClassIgnoreAttribute");
+            if (ignoreProp != null)
+            {
+                {
+                    _logInfo("Removing [ImmutableClassIgnore] attribute from property " + prop.Name);
+                    prop.CustomAttributes.Remove(ignoreProp);
+                }
+            }
+        }
     }
 }
 

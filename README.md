@@ -2,6 +2,9 @@
 
 ##A Fody add-in that generates boilerplate code for an immutable class from a minimal class definition.
 
+####NOTE: This component is not fully functional or usable. This was an experiment to test if it is possible to write a minimal class definition with just a class name and the needed properties, and then automatically generate code for a constructor and 'With' methods commonly needed when working with immutable classes. This component used a method called IL weaving, where the missing methods were added by injecting IL commands into the precompiled assembly. Unfortunately there were problems with this method. In Xamarin Studio, it was possible to use these generated methods, but the editor did not recognized them and marked them as errors -- the code was compiling however. In Visual Studio it was worse: the code did not even compile. If these problems cannot be solved, which looks unlikely, a better approach would be to inject the code lines on source code level.
+
+
 ####How to use it:
 Add ImmutableClass.Fody in each project where you want to use it:
 * If you're using Visual Studio, right click on the project name in the Solution Explorer and select "Manage NuGet packages..." from the pop-up menu. Or use the NuGet Package Manager Console if you prefer.
@@ -105,3 +108,6 @@ namespace Example
 ```
 
 You can have extra attributes on the properties (such as `[JsonProperty("int")] if you need to use the class in JSON serialization`), they will be passed on to the generated class as they are. Likewise you can have fields in your class, they are also retained on without modification.
+
+You can use an optional [ImmutableClassIgnore] attribute on some properties, if you don't want them to be included in code generation. In that case, they will not be added as parameters to the default constructor, and no 'With' method will be generated for them.
+

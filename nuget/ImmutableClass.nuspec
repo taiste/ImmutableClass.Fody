@@ -2,20 +2,20 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>ImmutableClass.Fody</id>
-    <version>1.1.0</version>
+    <version>1.1.12</version>
     <title>ImmutableClass.Fody</title>
     <authors>Tom Ekstrom</authors>
     <owners>Taiste Oy</owners>
     <licenseUrl>https://github.com/taiste/ImmutableClass.Fody/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/taiste/ImmutableClass.Fody</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A Fody add-in that generates a fully usable immutable class from a stub.</description>
+    <description>A Fody add-in that generates boilerplate code for an immutable class from a minimal class definition.</description>
     <summary />
     <language>en-US</language>
     <copyright>Copyright 2016 Taiste Oy</copyright>
     <tags>immutable Fody Cecil ILWeaving</tags>
     <dependencies>
-      <dependency id="Fody" version="1.0"/>
+      <dependency id="Fody" version="1.29.4"/>
     </dependencies>
   </metadata>
   <files>

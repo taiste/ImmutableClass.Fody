@@ -26,5 +26,6 @@ public class ModuleWeaver
 
         // Clean away the reference to the weaver from every project
         new ReferenceCleaner(ModuleDefinition, LogInfo).Execute();
+        LogInfo("All done.");
     }
 }

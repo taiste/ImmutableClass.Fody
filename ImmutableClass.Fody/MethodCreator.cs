@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using Mono.Cecil;
@@ -27,22 +27,27 @@ public class MethodCreator
         var methodAttributes = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName;
         var method = new MethodDefinition(".ctor", methodAttributes, _moduleDefinition.TypeSystem.Void);
 
-        // Add each property in the class as a parameter for the constructor
+        // Set parameters for constructor, and add corresponding assignment in method body:
+        // 1. Add each property in the class as a parameter for the constructor
+        // 2. Set the properties in the class from the constructor parameters
+        // Properties marked with the [ImmutableClassIgnore] attribute are ignored
         foreach (var prop in type.Properties)
         {
+            if (prop.CustomAttributes.ContainsAttribute("ImmutableClassIgnoreAttribute"))
+            {
+                _logInfo("Ignoring property " + prop.Name);
+                continue;
+            }
             string paramName = Char.ToLowerInvariant(prop.Name [0]) + prop.Name.Substring (1); // convert first letter of name to lowercase
-            _logInfo("adding parameter " + paramName + " to ctor");
-            method.Parameters.Add(new ParameterDefinition(paramName, ParameterAttributes.None, prop.PropertyType));
+            _logInfo("Adding parameter " + paramName + " to ctor");
+            var pd = (new ParameterDefinition(paramName, ParameterAttributes.HasDefault, prop.PropertyType));
+            method.Parameters.Add(pd);
+            _logInfo("Setting property " + prop.Name);
+            method.Body.Instructions.Add(Instruction.Create(OpCodes.Ldarg_0));
+            method.Body.Instructions.Add(Instruction.Create(OpCodes.Ldarg, pd));
+            method.Body.Instructions.Add(Instruction.Create(OpCodes.Call, prop.SetMethod));
         }
 
-        // Add body
-        // Set the properties in the class from the constructor parameters
-        for (int i = 0; i < type.Properties.Count; i++) {
-            _logInfo("setting property " + type.Properties[i].Name);
-            method.Body.Instructions.Add (Instruction.Create (OpCodes.Ldarg_0));
-            method.Body.Instructions.Add (Instruction.Create (OpCodes.Ldarg, method.Parameters[i]));
-            method.Body.Instructions.Add (Instruction.Create (OpCodes.Call, type.Properties [i].SetMethod));
-        }
         method.Body.Instructions.Add(Instruction.Create(OpCodes.Ret));
         return method;
     }
@@ -53,9 +58,16 @@ public class MethodCreator
     public void DestroyEmptyConstructor(TypeDefinition type)
     {
         var ctor = type.Methods.First (md => md.Name == ".ctor" && md.Parameters.Count == 0);
-        if (ctor != null) {
-            _logInfo ("DestroyEmptyConstructor() " + ctor.Name + ":" + ctor.Parameters.Count);
-            type.Methods.Remove (ctor);
+        try
+        {
+            if (ctor != null)
+            {
+                _logInfo("DestroyEmptyConstructor() " + ctor.Name + ":" + ctor.Parameters.Count);
+                type.Methods.Remove(ctor);
+            }
+        }
+        catch {
+            _logInfo("Not able to DestroyEmptyConstructor() " + ctor.Name + ":" + ctor.Parameters.Count);
         }
     }
 
@@ -79,8 +91,15 @@ public class MethodCreator
 
         // Push onto the stack values of all properties from the current instance, to be used as parameters to the constructor
         // The 'with' property is replaced with the parameter used in the method call
+        int ignoredProps = 0;
         foreach(PropertyDefinition existingProp in type.Properties)
         {
+            if (existingProp.CustomAttributes.ContainsAttribute("ImmutableClassIgnoreAttribute"))
+            {
+                _logInfo("Ignoring property " + existingProp.Name);
+                ignoredProps++;
+                continue;
+            }
             if (existingProp.Name.ToLower().Equals(replacementProp.Name.ToLower())) {
                 _logInfo("Replacing property " + existingProp.Name + " with parameter");
                 method.Body.Instructions.Add (Instruction.Create (OpCodes.Ldarg, method.Parameters[0]));
@@ -92,7 +111,7 @@ public class MethodCreator
                 method.Body.Instructions.Add (Instruction.Create (OpCodes.Call, existingProp.GetMethod));
             }
         }
-        var ctor = type.Methods.First (md => md.Name == ".ctor" && md.Parameters.Count == type.Properties.Count); 
+        var ctor = type.Methods.First (md => md.Name == ".ctor" && md.Parameters.Count == type.Properties.Count - ignoredProps); 
         method.Body.Instructions.Add(Instruction.Create(OpCodes.Newobj, ctor));
         method.Body.Instructions.Add(Instruction.Create(OpCodes.Ret));
         return method;
